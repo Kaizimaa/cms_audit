@@ -1,15 +1,19 @@
-'use client';
+import React from 'react';
 
-import { useFormStatus } from 'react-dom';
+interface SubmitButtonProps {
+  children: React.ReactNode;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  pending: boolean;
+}
 
-export function SubmitButton({ children }: { children: React.ReactNode }) {
-  const { pending } = useFormStatus();
-
+export function SubmitButton({ children, onClick, pending }: SubmitButtonProps) {
   return (
     <button
       type={pending ? 'button' : 'submit'}
       aria-disabled={pending}
       className="flex h-10 w-full items-center justify-center rounded-md border text-sm transition-all focus:outline-none"
+      onClick={onClick}
+      disabled={pending}
     >
       {children}
       {pending && (

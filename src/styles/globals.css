@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    background-color: #d8dde7c9 ;
+}
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}

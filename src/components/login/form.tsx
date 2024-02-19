@@ -1,10 +1,24 @@
+import React from 'react';
+
 export function Form({
   action,
   children,
+  setUsername,
+  setPassword,
 }: {
   action: any;
+  setUsername: (username: string) => void;
+  setPassword: (password: string) => void;
   children: React.ReactNode;
 }) {
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <form
       action={action}
@@ -22,6 +36,7 @@ export function Form({
           name="username"
           type="text"
           required
+          onChange={handleUsernameChange}
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
@@ -37,6 +52,7 @@ export function Form({
           name="password"
           type="password"
           required
+          onChange={handlePasswordChange}
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
