@@ -1,101 +1,93 @@
-"use client";
+'use client'
 
-// import { Form } from "@/components/login/form";
-import Image from "next/image";
-// import { SubmitButton } from "@/components/login/submit-button";
-import { useState } from "react";
+import { Form, Input, Button, Typography } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import "@/styles/globals.css";
+import Image from "next/image";
+
+
+
+const { Title } = Typography;
 
 const API_URL = process.env.NEXT_PUBLIC_DATA_BASE_URL as string;
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
+export default function LoginPage() {
+const { push } = useRouter();
 
-  const handleSubmit = async (e: any) => {
+  const onFinish = async (e: any) => {
     e.preventDefault();
-    if (username && password) {
-      router.push("/");
-    } else {
-      try {
-        const response = await fetch(API_URL + "/auth/signin", {
+        const response = await fetch(API_URL + "/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({
+             username: e.currentTarget.username.value,
+             password: e.currentTarget.password.value 
+            }),
         });
         if (response.ok) {
-          console.log("Login Berhasil");
+          push("/");
         }
-      } catch (error) {
-        console.error("Terjadi kesalahan:", error);
-      }
-    }
-  };
+  }
   return (
-    <> 
-    <div className="flex h-screen w-screen items-center justify-space  bg-gray-50 ">
+    <div className="login">
     <div className="outline-none">
-      <Image src="/example.jpg" alt="logo" width={710} height={860}  />
+      <Image src="/example.jpg" alt="logo" width={650} height={800} />
     </div>
-      <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
-        <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
-          <div>
+    <div className="login-page">
+      <div className="flex justify-center mb-10">
             <Image src="/logonew.png" alt="logo cms" width={200} height={175} />
-          </div>
-          <p className="text-sm text-gray-500">
-            Masukan Username & Password Untuk Melakukan Login
-          </p>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
+      </div>
+      <div className="text-center mb-10">
+      <Title level={3}>Hai , Selamat Datang Di Audit</Title>
+      <Title level={4}>Masukan Nama Pengguna & Kata Sandi Anda !</Title>
+      </div>
+    
+
+      <div className="w-full max-w-md">
+        <Form
+          name="login"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
         >
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-xs text-gray-600 uppercase"
-            >
-            </label>
-            <input
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Masukkan nama pengguna!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Nama Pengguna"
               id="username"
               name="username"
-              type="text"
-              placeholder="Masukan Nama Pengguna..."
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-xs text-gray-600 uppercase"
-            >
-            </label>
-            <input
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Masukkan kata sandi!" }]}
+          >
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Kata Sandi"
               id="password"
               name="password"
-              type="password"
-              placeholder="Masukan Password..."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
-          </div>
-          <button
-            type="submit"
-            className="flex h-10 w-full items-center bg-blue-900 text-white justify-center rounded-md border text-sm transition-all focus:outline-none"
-          >
-            MASUK
-          </button>
-        </form>
+          </Form.Item>
+          <Form.Item>
+            <Button 
+              type="primary" block
+              style={{ backgroundColor: "#00008b", color: "white" }}
+              htmlType="submit"
+              className="w-full"
+            >
+              Masuk
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
     </div>
-    </>
+    </div>
   );
 }
