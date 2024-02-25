@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    background-color: #d8dde7c9 ;
-}
 
-.icon {
-    width: 1.5rem;
-    height: 1.5rem;
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+.login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #4BA4DA;
+    gap: 0;
 }
