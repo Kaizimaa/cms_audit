@@ -1,10 +1,11 @@
-'use client'
+'use client';
 
 import { Form, Input, Button, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import "@/styles/globals.css";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 
 
@@ -15,22 +16,36 @@ const API_URL = process.env.NEXT_PUBLIC_DATA_BASE_URL as string;
 export default function LoginPage() {
 const { push } = useRouter();
 
-  const onFinish = async (e: any) => {
-    e.preventDefault();
-        const response = await fetch(API_URL + "/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-             username: e.currentTarget.username.value,
-             password: e.currentTarget.password.value 
-            }),
-        });
-        if (response.ok) {
-          push("/");
-        }
-  }
+  const handlerLogin = async (e: any) => {
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        username: e.username,
+        password: e.password,
+        callbackUrl: "/",
+      });
+      if (!res?.error) {
+        push("/");
+      }else{
+       console.log(res.error) 
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    };
+        // const response = await fetch(API_URL + "/api/auth/login", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //      username: e.currentTarget.username.value,
+        //      password: e.currentTarget.password.value 
+        //     }),
+        // });
+        // if (response.ok) {
+        //   push("/");
+        // }
   return (
     <div className="login">
     <div className="outline-none">
@@ -50,7 +65,7 @@ const { push } = useRouter();
         <Form
           name="login"
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={(e) => handlerLogin(e)}
         >
           <Form.Item
             name="username"
