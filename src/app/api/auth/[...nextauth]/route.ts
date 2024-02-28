@@ -47,7 +47,7 @@ const authOptions : NextAuthOptions = {
             if("username" in token){
                 session.user.username = token.username;
             }
-            if("fullname" in token){
+            if("fullname" in token){    
                 session.user.fullname = token.fullname;
             }
             if("role" in token){
